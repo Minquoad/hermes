@@ -1,0 +1,69 @@
+services:
+  hermes:
+    image: nousresearch/hermes-agent
+    container_name: hermes
+    command: gateway run
+    environment:
+      - TZ=Europe/Paris
+      - HERMES_TIMEZONE=Europe/Paris
+      - API_SERVER_ENABLED=true
+      - API_SERVER_HOST=0.0.0.0
+      - API_SERVER_KEY=${API_SERVER_KEY}
+      - API_SERVER_CORS_ORIGINS=*
+      - OBSIDIAN_VAULT_PATH=/opt/storage/knowledges
+    volumes:
+      - hermes-agent-src:/opt/hermes
+      - ./hermes-data:/opt/data
+      - ./storage:/opt/storage
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+          cpus: "3.0"
+    networks:
+      - hermes-internal
+    restart: unless-stopped
+
+  hermes-webui:
+    image: ghcr.io/nesquena/hermes-webui
+    container_name: hermes-webui
+    environment:
+      - TZ=Europe/Paris
+      - HERMES_WEBUI_HOST=0.0.0.0
+      - HERMES_WEBUI_PORT=8787
+      - HERMES_WEBUI_PASSWORD=${HERMES_WEBUI_PASSWORD}
+      - HERMES_WEBUI_STATE_DIR=/opt/webui
+      - HERMES_WEBUI_AGENT_DIR=/opt/hermes
+      - HERMES_WEBUI_DEFAULT_WORKSPACE=/opt/storage
+      - HERMES_HOME=/opt/data
+    volumes:
+      - hermes-agent-src:/opt/hermes
+      - ./hermes-data:/opt/data
+      - ./storage:/opt/storage
+      - ./webui-data:/opt/webui
+    networks:
+      - hermes-internal
+      - web
+    depends_on:
+      - hermes
+    restart: unless-stopped
+ 
+  hermes-silverbullet:
+    image: ghcr.io/silverbulletmd/silverbullet
+    container_name: hermes-silverbullet
+    environment:
+      - SB_USER=${SB_USER}
+    volumes:
+      - ./storage/knowledges:/space
+    networks:
+      - hermes-internal
+      - web
+    restart: unless-stopped
+
+volumes:
+  hermes-agent-src:
+
+networks:
+  hermes-internal:
+  web:
+    external: true
