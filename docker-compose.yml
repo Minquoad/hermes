@@ -10,6 +10,7 @@ services:
       - API_SERVER_HOST=0.0.0.0
       - API_SERVER_KEY=${API_SERVER_KEY}
       - API_SERVER_CORS_ORIGINS=*
+      - BROWSER_CDP_URL=http://hermes-browser:9223
       - OBSIDIAN_VAULT_PATH=/opt/storage/knowledges
     volumes:
       - hermes-agent-src:/opt/hermes
@@ -22,6 +23,32 @@ services:
           cpus: "3.0"
     networks:
       - hermes-internal
+    depends_on:
+      - hermes-browser
+    restart: unless-stopped
+
+  hermes-browser:
+    image: lscr.io/linuxserver/chromium:latest
+    container_name: hermes-browser
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - CUSTOM_USER=admin
+      - PASSWORD=${HERMES_WEBUI_PASSWORD}
+      - TITLE=Hermes Browser
+      - CHROME_CLI=--remote-debugging-port=9222 --remote-allow-origins=* --user-data-dir=/config/chrome-debug --no-first-run --no-default-browser-check --disable-dev-shm-usage
+    volumes:
+      - ./browser/data:/config
+      - ./browser/init:/custom-cont-init.d:ro
+      - ./browser/services:/custom-services.d:ro
+    expose:
+      - "9222"
+      - "9223"
+    shm_size: "2gb"
+    networks:
+      - hermes-internal
+      - web
     restart: unless-stopped
 
   hermes-webui:

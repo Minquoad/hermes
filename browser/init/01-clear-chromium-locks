@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+set -e
+rm -f /config/chrome-debug/SingletonCookie /config/chrome-debug/SingletonLock /config/chrome-debug/SingletonSocket
+rm -f /config/.config/chromium/SingletonCookie /config/.config/chromium/SingletonLock /config/.config/chromium/SingletonSocket

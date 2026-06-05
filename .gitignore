@@ -1,3 +1,4 @@
 *-data/
+browser/data/
 storage
 .env

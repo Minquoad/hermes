@@ -1,0 +1,31 @@
+# générer le mot de passe pour caddy
+	docker exec reverse-proxy caddy hash-password --plaintext "..."
+
+# Setup initial
+	docker run -it --rm -v ./hermes-data:/opt/data nousresearch/hermes-agent setup
+
+	écraser
+		MEMORY.md
+		USER.md
+		SOUL.md
+
+	config.yml
+		terminal.cwd : /opt/storage
+
+	via chat :
+		demander de faire fonctionner
+			Browser toolset
+			agent-browser
+			browser_navigate et browser_snapshot avec Chromium
+
+
+# mise à jour
+	docker compose pull
+	docker compose down
+	docker volume ls
+	docker volume rm <nom du volume>
+	docker compose up -d
+
+
+# executer des commandes hermes dans le container
+	docker exec -it hermes .venv/bin/hermes cron list

@@ -5,3 +5,11 @@ agent.guenael.eu {
 agent-md.guenael.eu {
     reverse_proxy hermes-silverbullet:3000
 }
+
+agent-browser.guenael.eu {
+    reverse_proxy https://hermes-browser:3001 {
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}

@@ -1,0 +1,33 @@
+#!/usr/bin/with-contenv bash
+set -e
+
+cat > /tmp/hermes-cdp-nginx.conf <<'EOF'
+pid /tmp/hermes-cdp-nginx.pid;
+events {}
+http {
+    access_log off;
+    error_log /dev/stderr warn;
+
+    server {
+        listen 0.0.0.0:9223;
+
+        location / {
+            proxy_http_version 1.1;
+            proxy_set_header Host 127.0.0.1:9222;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Accept-Encoding "";
+            sub_filter_types application/json;
+            sub_filter_once off;
+            sub_filter 'ws://127.0.0.1:9222' 'ws://hermes-browser:9223';
+            proxy_pass http://127.0.0.1:9222;
+        }
+    }
+}
+EOF
+
+while ! nc -z 127.0.0.1 9222; do
+    sleep 1
+done
+
+exec nginx -c /tmp/hermes-cdp-nginx.conf -g 'daemon off;'
