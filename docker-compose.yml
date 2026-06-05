@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
 
   hermes-browser:
-    image: lscr.io/linuxserver/chromium:latest
+    image: lscr.io/linuxserver/chromium
     container_name: hermes-browser
     environment:
       - PUID=1000
@@ -37,6 +37,7 @@ services:
       - CUSTOM_USER=admin
       - PASSWORD=${HERMES_WEBUI_PASSWORD}
       - TITLE=Hermes Browser
+      - RESTART_APP=true
       - CHROME_CLI=--remote-debugging-port=9222 --remote-allow-origins=* --user-data-dir=/config/chrome-debug --no-first-run --no-default-browser-check --disable-dev-shm-usage
     volumes:
       - ./browser/data:/config
@@ -46,6 +47,11 @@ services:
       - "9222"
       - "9223"
     shm_size: "2gb"
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
     networks:
       - hermes-internal
       - web
