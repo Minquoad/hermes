@@ -1,0 +1,7 @@
+agent.guenael.eu {
+    reverse_proxy hermes-webui:8787
+}
+
+agent-md.guenael.eu {
+    reverse_proxy hermes-silverbullet:3000
+}
