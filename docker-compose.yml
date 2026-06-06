@@ -85,6 +85,8 @@ services:
     image: ghcr.io/silverbulletmd/silverbullet
     container_name: hermes-silverbullet
     environment:
+      - PUID=10000
+      - PGID=10000
       - SB_USER=${SB_USER}
     volumes:
       - ./storage/knowledges:/space
