@@ -1,4 +1,7 @@
-*-data/
-browser/data/
-storage
 .env
+*-data/*
+browser/data/
+
+!storage-data/knowledges/
+storage-data/knowledges/*
+!storage-data/knowledges/CONFIG.md
