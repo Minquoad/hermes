@@ -15,7 +15,7 @@ services:
     volumes:
       - hermes-agent-src:/opt/hermes
       - ./hermes-data:/opt/data
-      - ./storage:/opt/storage
+      - ./storage-data:/opt/storage
     deploy:
       resources:
         limits:
@@ -72,7 +72,7 @@ services:
     volumes:
       - hermes-agent-src:/opt/hermes
       - ./hermes-data:/opt/data
-      - ./storage:/opt/storage
+      - ./storage-data:/opt/storage
       - ./webui-data:/opt/webui
     networks:
       - hermes-internal
@@ -89,7 +89,7 @@ services:
       - PGID=10000
       - SB_USER=${SB_USER}
     volumes:
-      - ./storage/knowledges:/space
+      - ./storage-data/knowledges:/space
     networks:
       - hermes-internal
       - web
