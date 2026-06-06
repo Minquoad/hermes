@@ -10,7 +10,10 @@
 		SOUL.md
 
 	config.yml
-		terminal.cwd : /opt/storage
+		terminal:
+			cwd : /opt/storage
+		display:
+			show_cost: true
 
 	via chat :
 		demander de faire fonctionner
@@ -24,7 +27,7 @@
 	docker compose down
 	docker volume ls
 	docker volume rm <nom du volume>
-	docker compose up -d
+	docker compose up -d && docker compose logs -f
 
 
 # executer des commandes hermes dans le container
