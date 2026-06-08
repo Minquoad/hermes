@@ -10,6 +10,19 @@ docker exec reverse-proxy caddy hash-password --plaintext "..."
 
 ## Setup initial
 
+ajouter les droits/propriétaire
+
+```sh
+chmod -R 777 storage-data
+chown -R 10000:10000 storage-data
+
+mkdir hermes-data
+chown 10000:10000 hermes-data
+
+mkdir webui
+chown 10000:10000 webui
+```
+
 Lancer l'assistant de configuration Hermes :
 
 ```sh
@@ -22,12 +35,6 @@ docker run -it --rm \
   nousresearch/hermes-agent setup
 ```
 
-Pendant la configuration, écraser les fichiers suivants si nécessaire :
-
-- `MEMORY.md`
-- `USER.md`
-- `SOUL.md`
-
 Configuration attendue dans `config.yml` :
 
 ```yaml
@@ -37,12 +44,15 @@ display:
   show_cost: true
 ```
 
-## Tâches à créer via le chat
+Pendant la configuration, écraser les fichiers suivants si nécessaire :
 
-Créer un skill pour compenser l'absence d'outil dans les crons :
+- `MEMORY.md`
+- `USER.md`
+- `SOUL.md`
 
-- `cronjob`
-- `messaging`
+Dans l'UI web de silverbullet
+- installer `treeview` (proposé nativement)
+- installer `github:deepkn/silverbullet-graphview/graphview.plug.js`
 
 ## Mise à jour
 
