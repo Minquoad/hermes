@@ -50,7 +50,16 @@ Pendant la configuration, écraser les fichiers suivants si nécessaire :
 - `USER.md`
 - `SOUL.md`
 
+Si les messages vocaux ne sont pas gérés dans telegram :
+
+```sh
+docker exec -it hermes bash
+uv pip install --python /opt/hermes/.venv/bin/python faster-whisper
+/command/s6-svc -t /run/service/gateway-default
+```
+
 Dans l'UI web de silverbullet
+
 - installer `treeview` (proposé nativement)
 - installer `github:deepkn/silverbullet-graphview/graphview.plug.js`
 

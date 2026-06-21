@@ -19,8 +19,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: 6G
-          cpus: "3.0"
+          memory: 8G
+          cpus: "4.0"
     networks:
       - hermes-internal
     depends_on:
@@ -50,7 +50,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4G
+          memory: 6G
           cpus: "2.0"
     networks:
       - hermes-internal
