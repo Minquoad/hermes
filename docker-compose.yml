@@ -38,7 +38,13 @@ services:
       - PASSWORD=${HERMES_WEBUI_PASSWORD}
       - TITLE=Hermes Browser
       - RESTART_APP=true
-      - CHROME_CLI=--remote-debugging-port=9222 --remote-allow-origins=* --user-data-dir=/config/chrome-debug --no-first-run --no-default-browser-check --disable-dev-shm-usage
+      - >-
+        CHROME_CLI=--remote-debugging-port=9222
+        --remote-allow-origins=*
+        --user-data-dir=/config/chrome-debug
+        --no-first-run
+        --no-default-browser-check
+        --disable-dev-shm-usage
     volumes:
       - ./browser/data:/config
       - ./browser/init:/custom-cont-init.d:ro
@@ -69,6 +75,7 @@ services:
       - HERMES_WEBUI_AGENT_DIR=/opt/hermes
       - HERMES_WEBUI_DEFAULT_WORKSPACE=/opt/storage
       - HERMES_HOME=/opt/data
+      - HERMES_NIX_BUILD=1
     volumes:
       - hermes-agent-src:/opt/hermes
       - ./hermes-data:/opt/data
