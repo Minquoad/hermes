@@ -15,7 +15,7 @@ Créez le Caddyfile à partir de l'exemple.
 ajouter les droits/propriétaire :
 
 ```sh
-chmod -R 777 storage-data
+mkdir storage-data
 chown -R 10000:10000 storage-data
 
 mkdir agent-data
