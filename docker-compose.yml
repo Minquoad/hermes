@@ -1,7 +1,7 @@
 services:
   hermes:
     image: nousresearch/hermes-agent
-    container_name: hermes
+    container_name: ${COMPOSE_PROJECT_NAME}-agent
     command: gateway run
     environment:
       - TZ=Europe/Paris
@@ -27,9 +27,53 @@ services:
       - hermes-browser
     restart: unless-stopped
 
-  hermes-browser:
+  webui:
+    image: ghcr.io/nesquena/hermes-webui
+    container_name: ${COMPOSE_PROJECT_NAME}-webui
+    environment:
+      - TZ=Europe/Paris
+      - HERMES_NIX_BUILD=1
+      - HERMES_API_URL=http://hermes:8642
+      - HERMES_HOME=/opt/data
+      - HERMES_WEBUI_PORT=8787
+      - HERMES_WEBUI_PASSWORD=${HERMES_WEBUI_PASSWORD}
+      - HERMES_WEBUI_CHAT_BACKEND=gateway
+      - HERMES_WEBUI_HOST=0.0.0.0
+      - HERMES_WEBUI_GATEWAY_USE_RUNS_API=true
+      - HERMES_WEBUI_GATEWAY_BASE_URL=http://hermes:8642
+      - HERMES_WEBUI_GATEWAY_API_KEY=${API_SERVER_KEY}
+      - HERMES_WEBUI_STATE_DIR=/opt/webui
+      - HERMES_WEBUI_AGENT_DIR=/opt/hermes
+      - HERMES_WEBUI_DEFAULT_WORKSPACE=/opt/storage
+    volumes:
+      - hermes-agent-src:/opt/hermes:ro
+      - ./hermes-data:/opt/data
+      - ./storage-data:/opt/storage
+      - ./webui-data:/opt/webui
+    networks:
+      - hermes-internal
+      - web
+    depends_on:
+      - hermes
+    restart: unless-stopped
+ 
+  silverbullet:
+    image: ghcr.io/silverbulletmd/silverbullet
+    container_name: ${COMPOSE_PROJECT_NAME}-silverbullet
+    environment:
+      - PUID=10000
+      - PGID=10000
+      - SB_USER=${SB_USER}
+    volumes:
+      - ./storage-data/knowledges:/space
+    networks:
+      - hermes-internal
+      - web
+    restart: unless-stopped
+
+  browser:
     image: lscr.io/linuxserver/chromium
-    container_name: hermes-browser
+    container_name: ${COMPOSE_PROJECT_NAME}-browser
     environment:
       - PUID=1000
       - PGID=1000
@@ -58,50 +102,6 @@ services:
         limits:
           memory: 6G
           cpus: "2.0"
-    networks:
-      - hermes-internal
-      - web
-    restart: unless-stopped
-
-  hermes-webui:
-    image: ghcr.io/nesquena/hermes-webui
-    container_name: hermes-webui
-    environment:
-      - TZ=Europe/Paris
-      - HERMES_NIX_BUILD=1
-      - HERMES_API_URL=http://hermes:8642
-      - HERMES_HOME=/opt/data
-      - HERMES_WEBUI_PORT=8787
-      - HERMES_WEBUI_PASSWORD=${HERMES_WEBUI_PASSWORD}
-      - HERMES_WEBUI_CHAT_BACKEND=gateway
-      - HERMES_WEBUI_HOST=0.0.0.0
-      - HERMES_WEBUI_GATEWAY_USE_RUNS_API=true
-      - HERMES_WEBUI_GATEWAY_BASE_URL=http://hermes:8642
-      - HERMES_WEBUI_GATEWAY_API_KEY=${API_SERVER_KEY}
-      - HERMES_WEBUI_STATE_DIR=/opt/webui
-      - HERMES_WEBUI_AGENT_DIR=/opt/hermes
-      - HERMES_WEBUI_DEFAULT_WORKSPACE=/opt/storage
-    volumes:
-      - hermes-agent-src:/opt/hermes:ro
-      - ./hermes-data:/opt/data
-      - ./storage-data:/opt/storage
-      - ./webui-data:/opt/webui
-    networks:
-      - hermes-internal
-      - web
-    depends_on:
-      - hermes
-    restart: unless-stopped
- 
-  hermes-silverbullet:
-    image: ghcr.io/silverbulletmd/silverbullet
-    container_name: hermes-silverbullet
-    environment:
-      - PUID=10000
-      - PGID=10000
-      - SB_USER=${SB_USER}
-    volumes:
-      - ./storage-data/knowledges:/space
     networks:
       - hermes-internal
       - web

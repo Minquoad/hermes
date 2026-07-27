@@ -1,12 +1,12 @@
-harlan.guenael.eu {
+hermes.guenael.eu {
     reverse_proxy hermes-webui:8787
 }
 
-harlan-md.guenael.eu {
+hermes-md.guenael.eu {
     reverse_proxy hermes-silverbullet:3000
 }
 
-harlan-browser.guenael.eu {
+hermes-browser.guenael.eu {
     reverse_proxy https://hermes-browser:3001 {
         transport http {
             tls_insecure_skip_verify
