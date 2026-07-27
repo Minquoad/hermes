@@ -1,7 +1,9 @@
 .env
-*-data/*
+Caddyfile
+
 browser/data/
 
+*-data/*
 !storage-data/knowledges/
 storage-data/knowledges/*
 !storage-data/knowledges/CONFIG.md
