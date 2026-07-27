@@ -1,5 +1,5 @@
 services:
-  hermes:
+  agent:
     image: nousresearch/hermes-agent
     container_name: ${COMPOSE_PROJECT_NAME}-agent
     command: gateway run
@@ -10,21 +10,19 @@ services:
       - API_SERVER_HOST=0.0.0.0
       - API_SERVER_KEY=${API_SERVER_KEY}
       - API_SERVER_CORS_ORIGINS=*
-      - BROWSER_CDP_URL=http://hermes-browser:9223
+      - BROWSER_CDP_URL=http://browser:9223
       - OBSIDIAN_VAULT_PATH=/opt/storage/knowledges
     volumes:
-      - hermes-agent-src:/opt/hermes
-      - ./hermes-data:/opt/data
+      - agent-src:/opt/hermes
+      - ./agent-data:/opt/data
       - ./storage-data:/opt/storage
     deploy:
       resources:
         limits:
           memory: 8G
           cpus: "4.0"
-    networks:
-      - hermes-internal
     depends_on:
-      - hermes-browser
+      - browser
     restart: unless-stopped
 
   webui:
@@ -33,28 +31,28 @@ services:
     environment:
       - TZ=Europe/Paris
       - HERMES_NIX_BUILD=1
-      - HERMES_API_URL=http://hermes:8642
+      - HERMES_API_URL=http://agent:8642
       - HERMES_HOME=/opt/data
       - HERMES_WEBUI_PORT=8787
       - HERMES_WEBUI_PASSWORD=${HERMES_WEBUI_PASSWORD}
       - HERMES_WEBUI_CHAT_BACKEND=gateway
       - HERMES_WEBUI_HOST=0.0.0.0
       - HERMES_WEBUI_GATEWAY_USE_RUNS_API=true
-      - HERMES_WEBUI_GATEWAY_BASE_URL=http://hermes:8642
+      - HERMES_WEBUI_GATEWAY_BASE_URL=http://agent:8642
       - HERMES_WEBUI_GATEWAY_API_KEY=${API_SERVER_KEY}
       - HERMES_WEBUI_STATE_DIR=/opt/webui
       - HERMES_WEBUI_AGENT_DIR=/opt/hermes
       - HERMES_WEBUI_DEFAULT_WORKSPACE=/opt/storage
     volumes:
-      - hermes-agent-src:/opt/hermes:ro
-      - ./hermes-data:/opt/data
+      - agent-src:/opt/hermes:ro
+      - ./agent-data:/opt/data
       - ./storage-data:/opt/storage
       - ./webui-data:/opt/webui
     networks:
-      - hermes-internal
+      - default
       - web
     depends_on:
-      - hermes
+      - agent
     restart: unless-stopped
  
   silverbullet:
@@ -67,7 +65,7 @@ services:
     volumes:
       - ./storage-data/knowledges:/space
     networks:
-      - hermes-internal
+      - default
       - web
     restart: unless-stopped
 
@@ -103,14 +101,13 @@ services:
           memory: 6G
           cpus: "2.0"
     networks:
-      - hermes-internal
+      - default
       - web
     restart: unless-stopped
 
 volumes:
-  hermes-agent-src:
+  agent-src:
 
 networks:
-  hermes-internal:
   web:
     external: true

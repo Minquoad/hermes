@@ -10,17 +10,19 @@ docker exec reverse-proxy caddy hash-password --plaintext "..."
 
 ## Setup initial
 
-ajouter les droits/propriétaire
+Créez le Caddyfile à partir de l'exemple.
+
+ajouter les droits/propriétaire :
 
 ```sh
 chmod -R 777 storage-data
 chown -R 10000:10000 storage-data
 
-mkdir hermes-data
-chown 10000:10000 hermes-data
+mkdir agent-data
+chown 10000:10000 agent-data
 
-mkdir webui
-chown 10000:10000 webui
+mkdir webui-data
+chown 10000:10000 webui-data
 ```
 
 Lancer l'assistant de configuration Hermes :
@@ -30,7 +32,7 @@ docker run -it --rm \
   -e TZ=Europe/Paris \
   -e HERMES_TIMEZONE=Europe/Paris \
   -e OBSIDIAN_VAULT_PATH=/opt/storage/knowledges \
-  -v ./hermes-data:/opt/data \
+  -v ./agent-data:/opt/data \
   -v ./storage-data:/opt/storage \
   nousresearch/hermes-agent setup
 ```
