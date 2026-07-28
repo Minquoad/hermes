@@ -44,7 +44,20 @@ terminal:
   cwd: /opt/storage
 display:
   show_cost: true
+stt:
+  enabled: true
+  provider: local
+  local:
+    model: small
+    language: 'fr'
+tts:
+  provider: edge
+  edge:
+    voice: fr-FR-RemyMultilingualNeural
 ```
+
+Pour un meilleure STT, remplacer `small` par `medium`.
+Pour une TTS féminin, remplacer `fr-FR-RemyMultilingualNeural` par `fr-FR-VivienneMultilingualNeural`.
 
 Pendant la configuration, écraser les fichiers suivants si nécessaire :
 
