@@ -11,6 +11,8 @@ services:
       - API_SERVER_KEY=${API_SERVER_KEY}
       - API_SERVER_CORS_ORIGINS=*
       - BROWSER_CDP_URL=http://browser:9223
+      - HASS_URL=${HASS_URL}
+      - HASS_TOKEN=${HASS_TOKEN}
       - HERMES_WRITE_SAFE_ROOT=/opt/data:/opt/storage:/tmp
       - OBSIDIAN_VAULT_PATH=/opt/storage/knowledges
     volumes:
