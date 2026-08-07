@@ -13,12 +13,13 @@ services:
       - BROWSER_CDP_URL=http://browser:9223
       - HASS_URL=${HASS_URL}
       - HASS_TOKEN=${HASS_TOKEN}
-      - HERMES_WRITE_SAFE_ROOT=/opt/data:/opt/storage:/tmp
+      - HERMES_WRITE_SAFE_ROOT=/opt/data:/tmp:/opt/storage:/opt/shared
       - OBSIDIAN_VAULT_PATH=/opt/storage/knowledges
     volumes:
       - agent-src:/opt/hermes
       - ./agent-data:/opt/data
       - ./storage-data:/opt/storage
+      - ../shared-data:/opt/shared
     deploy:
       resources:
         limits:
@@ -50,6 +51,7 @@ services:
       - agent-src:/opt/hermes:ro
       - ./agent-data:/opt/data
       - ./storage-data:/opt/storage
+      - ../shared-data:/opt/shared
       - ./webui-data:/opt/webui
     networks:
       - default

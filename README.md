@@ -18,6 +18,9 @@ ajouter les droits/propriétaire :
 mkdir storage-data
 chown -R 10000:10000 storage-data
 
+mkdir ../shared-data
+chown -R 10000:10000 ../shared-data
+
 mkdir agent-data
 chown 10000:10000 agent-data
 
@@ -31,9 +34,11 @@ Lancer l'assistant de configuration Hermes :
 docker run -it --rm \
   -e TZ=Europe/Paris \
   -e HERMES_TIMEZONE=Europe/Paris \
+  -e HERMES_WRITE_SAFE_ROOT=/opt/data:/tmp:/opt/storage:/opt/shared \
   -e OBSIDIAN_VAULT_PATH=/opt/storage/knowledges \
   -v ./agent-data:/opt/data \
   -v ./storage-data:/opt/storage \
+  -v ../shared-data:/opt/shared \
   nousresearch/hermes-agent setup
 ```
 
