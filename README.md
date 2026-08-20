@@ -98,3 +98,14 @@ docker compose up -d && docker compose logs -f
 ```sh
 docker exec -it hermes hermes
 ```
+
+## Troubleshooting
+
+### après un changement de clé d'api
+
+Il faut manuellement mettre à jour cette clé dans `agent-data/.env`.
+
+### après un changement de provider ou modèle
+
+Il faut ensuite retirer les champs "provider_snapshot" et "model_snapshot" de agent-data/cron/jobs.json sinon les crons qui ont ces champs ne marche plus.
+pour voir s'il y en a : `cat agent-data/cron/jobs.json | grep _snap`
