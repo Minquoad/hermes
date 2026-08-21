@@ -20,6 +20,7 @@ services:
       - ./agent-data:/opt/data
       - ./storage-data:/opt/storage
       - ../shared-data:/opt/shared
+      - ./webui-data:/opt/webui:ro
     deploy:
       resources:
         limits:
