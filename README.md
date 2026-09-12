@@ -2,12 +2,6 @@
 
 Notes d’exploitation pour l’environnement Hermes.
 
-## Générer le mot de passe Caddy
-
-```sh
-docker exec reverse-proxy caddy hash-password --plaintext "..."
-```
-
 ## Setup initial
 
 Créez le Caddyfile à partir de l'exemple.
