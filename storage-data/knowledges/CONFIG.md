@@ -3,27 +3,27 @@
 #meta
 
 ```space-lua
-config.set("graphview", {
-  ignoredPrefixes = {
-    "Library",
-    "Repositories",
-    "CONFIG",
-  },
-  position = "rhs",
-  enableDecorations = true,
-})
-
-config.set("treeview", {
-  exclusions = {
-    {
-      type = "regex",
-      rule = "^(?:Library|Repositories|CONFIG).*$",
-      negate = false,
+config.set {
+  explorer = {
+    negativeFilter = {
+      "Library",
+      "Repositories",
+      "CONFIG",
+      "graphview.plug.js",
     },
   },
-})
 
-config.set("std.widgets.linkedMentions.enabled", false)
+  graphview = {
+    ignoredPrefixes = {
+      "Library",
+      "Repositories",
+      "CONFIG",
+      "graphview.plug.js",
+    },
+    enableDecorations = true,
+    position = "rhs",
+  },
+}
 ```
 
 ```space-style
