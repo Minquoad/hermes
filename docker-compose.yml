@@ -64,8 +64,11 @@ services:
   silverbullet:
     image: ghcr.io/silverbulletmd/silverbullet
     container_name: ${COMPOSE_PROJECT_NAME}-silverbullet
+    # Temporary workaround for SilverBullet 2.10.0, which ignores PUID/PGID.
     user: "10000:10000"
     environment:
+      - PUID=10000
+      - PGID=10000
       - SB_USER=${SB_USER}
     volumes:
       - ./storage-data/knowledges:/space
